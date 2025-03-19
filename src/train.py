@@ -8,7 +8,7 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.preprocessing import StandardScaler
 import xgboost as xgb
 from sklearn.model_selection import cross_val_score
-
+import joblib
 
 #  Load Data
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -69,6 +69,16 @@ param_grid = {
 xgb_model = xgb.XGBRegressor(random_state=42)
 grid_search = GridSearchCV(estimator=xgb_model, param_grid=param_grid, cv=5, scoring='neg_mean_squared_error', verbose=1, n_jobs=-1)
 grid_search.fit(X_train_scaled, y_train)
+
+
+# Extract Best Model
+best_model = grid_search.best_estimator_
+
+# Save the trained model
+model_path = os.path.join(BASE_DIR, "..", "reports", "xgboost_model.pkl")
+joblib.dump(best_model, model_path)
+
+print(f"✅ Model trained and saved at: {model_path}")
 
 # Best model from GridSearchCV
 print("Best Parameters:", grid_search.best_params_)
