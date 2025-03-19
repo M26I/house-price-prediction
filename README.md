@@ -1,30 +1,66 @@
-# 🏡 Housing Price Prediction
+# House Price Prediction
 
-## 📌 Overview
-This project predicts **housing prices** based on factors like **area, number of bedrooms, and other property features**. The goal is to build a regression model that estimates housing prices given property data.
+## Overview
+This project builds a machine learning model to predict house prices based on various features. It uses the **XGBoost** algorithm and evaluates performance using metrics like **Mean Absolute Error (MAE)**, **Root Mean Squared Error (RMSE)**, and **R² score**. The dataset is preprocessed with feature engineering, outlier removal, and scaling.
 
-## 💋 Dataset
-- **Source:** [Kaggle Housing Prices Dataset](https://www.kaggle.com/datasets/yasserh/housing-prices-dataset?)
-- **Features:**
-  - `price`: Price of the house (Target variable)
-  - `area`: Area of the house in square feet
-  - `bedrooms`: Number of bedrooms in the house
-  - `location`: Location of the house (Encoded as categorical variable)
-  - `year_built`: Year the house was built
-  - `sqft_living`: Square footage of living space
-  - `sqft_lot`: Square footage of the lot
+## Project Structure
+```
+├── data/                # Raw dataset
+├── notebooks/           # Jupyter Notebooks for exploration & evaluation
+│   ├── 01_data_cleaning.ipynb
+│   ├── 02_model_evaluation.ipynb
+├── src/                 # Source code
+│   ├── train.py         # Model training script
+├── reports/             # Saved models and reports
+│   ├── xgboost_model.pkl
+├── .gitignore           # Ignored files
+├── README.md            # Project documentation
+```
 
-## 🔧 Steps
-1. **Data Loading**: Loaded the dataset from a CSV file.
-2. **Outlier Removal**: Removed outliers in the target variable (`price`) using the Interquartile Range (IQR) method.
-3. **Feature Engineering**: Created new features such as `price_per_sqft` and `rooms_per_sqft`.
-4. **Data Preprocessing**: Standardized numerical features and performed one-hot encoding (OHE) for categorical features.
-5. **Model Training**: Used **XGBoost** for regression with hyperparameter tuning via **GridSearchCV**.
-6. **Evaluation**: Measured performance using **Mean Absolute Error (MAE)**, **Root Mean Squared Error (RMSE)**, and **R²**.
+## Dataset
+- The dataset (`Housing.csv`) contains various features such as **area, bedrooms, location**, etc.
+- Outliers were removed based on the **Interquartile Range (IQR)** method.
+- Feature engineering added:
+  - `price_per_sqft = price / (area + 1)`
+  - `rooms_per_sqft = bedrooms / (area + 1)`
 
-## 🖥️ Installation & Usage
-Clone the repository:
-```bash
-git clone https://github.com/M26I/housing-price-prediction
+## Model Training
+- The model is trained using **XGBoost** with **GridSearchCV** for hyperparameter tuning.
+- Best hyperparameters:
+  ```
+  {'colsample_bytree': 1.0, 'gamma': 0, 'learning_rate': 0.05, 'max_depth': 4, 'min_child_weight': 1, 'n_estimators': 500, 'reg_alpha': 0, 'subsample': 0.8}
+  ```
+- Trained model is saved as `xgboost_model.pkl` in the `reports/` directory.
+
+## Model Evaluation
+| Metric  | Value |
+|---------|-------------|
+| MAE     | 162,685.57 |
+| RMSE    | 228,625.48 |
+| R²      | 0.98       |
+
+- **Visualization:** Actual vs. Predicted prices, residuals distribution, and feature importance are analyzed in `02_model_evaluation.ipynb`.
+
+## How to Run
+1. **Set up the environment**
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. **Train the model**
+   ```bash
+   python src/train.py
+   ```
+3. **Evaluate the model**
+   Run `02_model_evaluation.ipynb` in Jupyter Notebook.
+
+## Future Improvements
+- Add more features (e.g., location-based metrics)
+- Try ensemble methods for better predictions
+- Deploy the model as an API
+
+---
+📌 **Author:** [M26I](https://github.com/M26I)  
+
+
 
 
