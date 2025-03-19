@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -12,9 +13,10 @@ import xgboost as xgb
 xgb_model = xgb.XGBRegressor()
 
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+data_path = os.path.join(BASE_DIR, "..", "data", "Housing.csv")
 
-
-df = pd.read_csv(r"C:\Users\marij\Desktop\house-price-prediction\data\Housing.csv")
+df = pd.read_csv(data_path)
 
 df= pd.get_dummies(df, drop_first=True)
 
